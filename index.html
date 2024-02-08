@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Leaflet avec OpenStreetMap, WMS et WFS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Ajout de la position relative pour le positionnement absolu */
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .legende {
+            position: absolute;
+            bottom: 10px; /* Ajustez la position verticale au besoin */
+            left: 10px; /* Ajustez la position horizontale au besoin */
+            z-index: 1000; /* Assurez-vous que l'image est au-dessus de la carte */
+            width: 500px; /* Ajustez la taille de l'image au besoin */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<img class="legende" src="lgend.png" alt="La legende">
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([43.4012106, 1.4112156], 13); // Centre de la carte et niveau de zoom
+
+    // Ajout de la couche OpenStreetMap
+    var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+        minZoom: 0,
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        ext: 'png'
+    }).addTo(map);
+
+    // Ajout des couches WMS
+    var wmsLayers = {
+        'NDVI du 09/02/2022': L.tileLayer.wms('https://www.geotests.net/geoserver/FelipeAM/wms', {
+            layers: 'FelipeAM:NDVI_20220209',
+            format: 'image/png',
+            transparent: true,
+            attribution: 'SENTINEL-2'
+        }),
+        'NDVI du 22/09/2022': L.tileLayer.wms('https://www.geotests.net/geoserver/FelipeAM/wms', {
+            layers: 'FelipeAM:NDVI_20220922',
+            format: 'image/png',
+            transparent: true,
+            attribution: 'SENTINEL-2'
+        }),
+        'Échantillons de la BD_Foret': L.tileLayer.wms('https://www.geotests.net/geoserver/vjourdai/wms', {
+            layers: 'vjourdai:Sample_BD_foret_T31TCJ_06',
+            format: 'image/png',
+            transparent: true,
+            attribution: 'BD_Foret',
+            styles: 'sample_leo' // Remplacez 'style_name' par le nom du style SLD que vous avez défini dans GeoServer
+        })
+    };
+
+    // Ajoutez toutes les couches WMS à la carte
+    for (var layer in wmsLayers) {
+        wmsLayers[layer].addTo(map);
+    }
+
+    L.control.layers({
+        'Stadia_AlidadeSmoothDark': Stadia_AlidadeSmoothDark
+    }, wmsLayers).addTo(map);
+</script>
+
+
+</body>
+</html>
