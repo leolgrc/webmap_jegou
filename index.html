@@ -10,7 +10,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            position: relative; /* Ajout de la position relative pour le positionnement absolu */
+            position: relative; 
         }
 
         #map {
@@ -20,10 +20,10 @@
 
         .legende {
             position: absolute;
-            bottom: 10px; /* Ajustez la position verticale au besoin */
-            left: 10px; /* Ajustez la position horizontale au besoin */
-            z-index: 1000; /* Assurez-vous que l'image est au-dessus de la carte */
-            width: 500px; /* Ajustez la taille de l'image au besoin */
+            bottom: 10px; 
+            left: 10px; 
+            z-index: 1000; 
+            width: 500px; 
             height: auto;
         }
     </style>
@@ -35,12 +35,13 @@
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([43.4012106, 1.4112156], 13); // Centre de la carte et niveau de zoom
+    var map = L.map('map').setView([43.4012106, 1.4112156], 13);
 
-    // Ajout de la couche OpenStreetMap
-    var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // Ajout du fond de carte
+    var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	    subdomains: 'abcd',
+	    maxZoom: 20
     }).addTo(map);
 
     // Ajout des couches WMS
@@ -62,17 +63,17 @@
             format: 'image/png',
             transparent: true,
             attribution: 'BD_Foret',
-            styles: 'sample_leo' // Remplacez 'style_name' par le nom du style SLD que vous avez défini dans GeoServer
+            styles: 'sample_leo'
         })
     };
 
-    // Ajoutez toutes les couches WMS à la carte
+    // Ajout de toutes les couches WMS à la carte
     for (var layer in wmsLayers) {
         wmsLayers[layer].addTo(map);
     }
 
     L.control.layers({
-        'Stadia_AlidadeSmoothDark': Stadia_AlidadeSmoothDark
+        'Stadia_AlidadeSmoothDark': CartoDB_Positron
     }, wmsLayers).addTo(map);
 </script>
 
