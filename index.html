@@ -26,9 +26,23 @@
             width: 250px; 
             height: auto;
         }
+
+        h1 {
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        p {
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+<h1>Essences d'arbres et NDVI</h1>
+<p>Cartographie des essences d'arbres issues de la BD Forêt de l'IGN et de l'indice de NDVI en hiver et à la fin de l'été</p>
 
 <div id="map"></div>
 <img class="legende" src="lgend.png" alt="La legende">
@@ -39,9 +53,9 @@
 
     // Ajout du fond de carte
     var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-	    subdomains: 'abcd',
-	    maxZoom: 20
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
     }).addTo(map);
 
     // Ajout des couches WMS
@@ -73,7 +87,7 @@
     }
 
     L.control.layers({
-        'Stadia_AlidadeSmoothDark': CartoDB_Positron
+        'CartoDB_Positron': CartoDB_Positron
     }, wmsLayers).addTo(map);
 </script>
 
